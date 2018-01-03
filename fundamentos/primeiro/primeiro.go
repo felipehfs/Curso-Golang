@@ -2,14 +2,14 @@
 package main
 
 /*
-	Os códigos em Golang podem ser divididos em pacotes e para utilizá-los é necessário
-	utilizar imports
+	Os códigos em Golang podem ser divididos em pacotes e para 
+	utilizá-los é necessário utilizar imports
 */
 
 import "fmt"
 
 // A função main é a porta de entrada de um programa em Go.
-func main(){
+func main() {
 	fmt.Print("Primeiro ")
 	fmt.Print("programa!!")
 }
