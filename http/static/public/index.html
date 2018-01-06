@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Arquivo estático</title>
+</head>
+<body>
+	<p>Utilizando um servidor estático legal... <datetime id="now"></datetime></p>
+	<script>
+		(function(){
+			var agora = new Date();
+			document.getElementById("now").textContent = agora.toLocaleString();
+			alert(agora);
+		}());
+	</script>
+</body>
+</html>
