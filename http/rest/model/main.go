@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
+	"time"
 
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -19,10 +21,37 @@ func protHandler(w http.ResponseWriter, request *http.Request) {
 		findByID(w, request, identifier)
 	case request.Method == "GET":
 		findAll(w, request)
+	case request.Method == "POST":
+		create(w, request)
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprint(w, "Desculpa.... Nada encontrado! :(")
 	}
+}
+
+func create(w http.ResponseWriter, request *http.Request) {
+	request.ParseForm()
+	p := Protocolo{}
+
+	p.Nome = request.FormValue("nome")
+	p.Checado, _ = strconv.ParseBool(request.FormValue("checado"))
+	p.Criacao = time.Now()
+
+	session, err := mgo.Dial("localhost")
+	if err != nil {
+		panic(err)
+	}
+
+	defer session.Close()
+	c := session.DB("test").C("protocolos")
+	err = c.Insert(&p)
+
+	if err != nil {
+		panic(err)
+	}
+
+	resp, _ := json.Marshal(p)
+	fmt.Fprint(w, string(resp))
 }
 
 func findAll(w http.ResponseWriter, req *http.Request) {
